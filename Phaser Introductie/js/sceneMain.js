@@ -5,33 +5,44 @@ class SceneMain extends Phaser.Scene {
     }
 
     preload() {
-        // This is where we load things into memory
-        this.load.image("mario", "images/mario.png");
-        this.load.image("hero", "images/hero.png", {
-            frameWidth: 32,
-            frameHeight: 32
+        this.alphaFactor = -0.01;
+        this.stepLenght = 5;
+        this.bananaX = game.config.width / 2;
+        this.bananaY = game.config.height / 2;
+        this.load.image("banana", "images/banana.png");
+
+        this.randomText = this.add.text(game.config.width / 2, game.config.height / 2, "Best banana game ever!".toUpperCase(), {
+            fontFamily: "sans-serif",
+            fontSize: 50,
+            color: "white"
         });
+        this.randomText.setOrigin(0.5, 0.5)
     }
 
     create() {
-        // This is where we create an manipulate objects
-        this.mario = this.add.image(50, 50, "mario");
-        this.hero = this.add.sprite(240, 320, "hero");
-        this.anims.create({
-            key: "hero_walk",
-            frames: [
-                { key: "hero", frame: 1 },
-                { key: "hero", frame: 2 },
-                { key: "hero", frame: 3 },
-                { key: "hero", frame: 4 }
-            ],
-            frameRate: 4,
-            repeat: -1
-        });
+        this.banana = this.add.image(this.bananaX, this.bananaY, "banana");
     }
 
     update() {
-        // This is the method that gets looped continuously
+        // Fading behaviour
+        if (this.banana.alpha === 0) {
+            this.alphaFactor = 0.01;
+        }
+        if (this.banana.alpha === 0) {
+            this.alphaFactor = -0.01;
+        }
+        this.banana.alpha += this.alphaFactor;
+
+        // Moving behaviour
+        if (this.banana.x >= game.config.width) {
+            this.stepLenght = this.stepLenght * -1;
+            this.banana.flipX = true;
+        }
+        if (this.banana.x <= 0) {
+            this.stepLenght = this.stepLenght * -1;
+            this.banana.flipX = false;
+        }
+        this.banana.x += this.stepLenght;
     }
 
 }
