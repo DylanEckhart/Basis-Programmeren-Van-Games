@@ -30,6 +30,7 @@ let scoreText;
 let game = new Phaser.Game(config);
 
 function preload () {
+    // Load images
     this.load.image('sky', 'assets/sky.png');
     this.load.image('ground', 'assets/platform.png');
     this.load.image('star', 'assets/star.png');
@@ -41,6 +42,7 @@ function preload () {
 }
 
 function create () {
+    // Create playforms
     this.add.image(400, 300, 'sky');
 
     platforms = this.physics.add.staticGroup();
@@ -50,12 +52,12 @@ function create () {
     platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
-
+    // Create player and player behaviour
     player = this.physics.add.sprite(100, 450, 'dude');
 
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
-
+    // Create animations
     this.anims.create( {
         key: 'left',
         frames: this.anims.generateFrameNumbers('dude', {
@@ -84,7 +86,7 @@ function create () {
         frameRate: 10,
         repeat: -1
     });
-
+    // Keyboard input
     cursors = this.input.keyboard.createCursorKeys();
 
     stars = this.physics.add.group( {
