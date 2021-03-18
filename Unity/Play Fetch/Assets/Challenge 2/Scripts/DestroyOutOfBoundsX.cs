@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DestroyOutOfBoundsX : MonoBehaviour
 {
-    private float leftLimit = 30;
-    private float bottomLimit = -5;
+    private float leftLimit = -35;
+    private float bottomLimit = 0;
 
     // Update is called once per frame
     void Update()
@@ -16,7 +16,7 @@ public class DestroyOutOfBoundsX : MonoBehaviour
             Destroy(gameObject);
         } 
         // Destroy balls if y position is less than bottomLimit
-        else if (transform.position.z > bottomLimit)
+        else if (transform.position.y < bottomLimit)
         {
             Destroy(gameObject);
         }
