@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerControllerX : MonoBehaviour
 {
     public bool gameOver;
+    public bool isLowEnough;
+    public bool isHighEnough;
 
     public float floatForce;
     private float gravityModifier = 1.5f;
@@ -16,12 +18,13 @@ public class PlayerControllerX : MonoBehaviour
     private AudioSource playerAudio;
     public AudioClip moneySound;
     public AudioClip explodeSound;
+    public AudioClip bounceSound;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody>();
+        playerRb = GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier;
         playerAudio = GetComponent<AudioSource>();
 
@@ -33,10 +36,38 @@ public class PlayerControllerX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerRb.transform.position.y <= 16)
+        {
+            isLowEnough = true;
+        } else if (playerRb.transform.position.y > 16)
+        {
+            isLowEnough = true;
+        }
+        
         // While space is pressed and player is low enough, float up
-        if (Input.GetKey(KeyCode.Space) && !gameOver)
+        if (Input.GetKey(KeyCode.Space) && !gameOver && isLowEnough)
         {
             playerRb.AddForce(Vector3.up * floatForce);
+        }
+
+        if (!isLowEnough)
+        {
+            playerRb.velocity = Vector3.down;
+        }
+        
+        if (playerRb.transform.position.y >= GetComponent<BoxCollider>().size.y)
+        {
+            isHighEnough = true;
+        }
+        else if (playerRb.transform.position.y < GetComponent<BoxCollider>().size.y)
+        {
+            isHighEnough = false;
+        }
+
+        if (!isHighEnough && !gameOver)
+        {
+            playerRb.velocity = new Vector3(0, 12, 0);
+            playerAudio.PlayOneShot(bounceSound, 1.0f);
         }
     }
 
