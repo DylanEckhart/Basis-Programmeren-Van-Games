@@ -21,6 +21,7 @@ public class PlayerControllerX : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<Rigidbody>();
         Physics.gravity *= gravityModifier;
         playerAudio = GetComponent<AudioSource>();
 
