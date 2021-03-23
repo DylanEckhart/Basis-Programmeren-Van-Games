@@ -6,7 +6,10 @@ public class PlayerControllerX : MonoBehaviour
 {
     private Rigidbody playerRb;
     private float speed = 500;
+    private float boost = 1000;
     private GameObject focalPoint;
+
+    public ParticleSystem smokeTrail;
 
     public bool hasPowerup;
     public GameObject powerupIndicator;
@@ -19,6 +22,8 @@ public class PlayerControllerX : MonoBehaviour
     {
         playerRb = GetComponent<Rigidbody>();
         focalPoint = GameObject.Find("Focal Point");
+        smokeTrail = GameObject.Find("Smoke_Particle").GetComponent<ParticleSystem>();
+        
     }
 
     void Update()
@@ -30,6 +35,21 @@ public class PlayerControllerX : MonoBehaviour
         // Set powerup indicator position to beneath player
         powerupIndicator.transform.position = transform.position + new Vector3(0, -0.6f, 0);
 
+        if (Input.GetKey(KeyCode.Space))
+        {
+            playerRb.AddForce(focalPoint.transform.forward * verticalInput * boost * Time.deltaTime);
+        }
+
+        smokeTrail.transform.position = gameObject.transform.position - Vector3.up * 0.3f;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            smokeTrail.Play();
+        }
+
+        Vector3 offestParticle = new Vector3(0, -0.5f, 0);
+        smokeTrail.transform.position = transform.position + offestParticle;
+
     }
 
     // If Player collides with powerup, activate powerup
@@ -40,6 +60,7 @@ public class PlayerControllerX : MonoBehaviour
             Destroy(other.gameObject);
             hasPowerup = true;
             powerupIndicator.SetActive(true);
+            StartCoroutine(PowerupCooldown());
         }
     }
 
@@ -57,7 +78,7 @@ public class PlayerControllerX : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             Rigidbody enemyRigidbody = other.gameObject.GetComponent<Rigidbody>();
-            Vector3 awayFromPlayer =  transform.position - other.gameObject.transform.position; 
+            Vector3 awayFromPlayer = other.gameObject.transform.position - transform.position; 
            
             if (hasPowerup) // if have powerup hit enemy with powerup force
             {
@@ -67,11 +88,6 @@ public class PlayerControllerX : MonoBehaviour
             {
                 enemyRigidbody.AddForce(awayFromPlayer * normalStrength, ForceMode.Impulse);
             }
-
-
         }
     }
-
-
-
 }
