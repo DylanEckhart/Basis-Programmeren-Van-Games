@@ -12,7 +12,7 @@ public class AutoGrass : EditorWindow
 
     public float density = 1;
 
-    [MenuItem("Doctrina/AutoGrass")]
+    [MenuItem("DylanEckhart/AutoGrass")]
     public static void ShowWindow()
     {
         EditorWindow.GetWindow(typeof(AutoGrass));
