@@ -5,12 +5,12 @@ using UnityEditor;
 public class AutoGrass : EditorWindow
 {
     Terrain ter;
-    int selTexture;
-    int selDetail;
+    public int selTexture;
+    public int selDetail;
     Vector2 randoming = new Vector2(0.8f, 1f);
     Material mat;
 
-    float density = 1;
+    public float density = 1;
 
     [MenuItem("Doctrina/AutoGrass")]
     public static void ShowWindow()
@@ -18,12 +18,12 @@ public class AutoGrass : EditorWindow
         EditorWindow.GetWindow(typeof(AutoGrass));
     }
 
-    void  Awake()
+    public void Awake()
     {
         mat = new Material(Shader.Find("Unlit/Transparent"));
     }
 
-    void OnGUI()
+    public void OnGUI()
     {
         GUILayout.Label("Select terrain with textures and grass");
 				
@@ -31,7 +31,6 @@ public class AutoGrass : EditorWindow
 		
         if (ter != null)
         {
-
             randoming = EditorGUILayout.Vector2Field("Random Min max", randoming);
 
             density = EditorGUILayout.Slider("Density:", density, 0, 1);
@@ -55,10 +54,9 @@ public class AutoGrass : EditorWindow
 
             if (GUILayout.Button("Apply"))
             {
-
-
-                int res = ter.terrainData.detailResolution;
-                int ares = ter.terrainData.alphamapResolution;
+                var terrainData = ter.terrainData;
+                int res = terrainData.detailResolution;
+                int ares = terrainData.alphamapResolution;
 
                 float scale = (float)ares / res;
                 int[,] dens = new int[res, res];
