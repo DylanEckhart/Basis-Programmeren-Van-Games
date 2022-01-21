@@ -10,12 +10,14 @@ public class GameManager : MonoBehaviour
     public CarController RR;
     public float vehicleSpeed;
 
+    // Pick car speed from CarController.cs
     private void FixedUpdate()
     {
         vehicleSpeed = RR.motorForce;
         updateNeedle();
     }
 
+    // Make the needle move while the car is accelerating
     public void updateNeedle()
     {
         desiredPosition = startPosition - endPosition;
